@@ -1,7 +1,7 @@
 {
-  "name": "suraj-user-token-loader",
-  "version": "1.0.0",
-  "description": "User Token Checker + Group Loader with Appstate",
+  "name": "suraj-hacker-task-controller",
+  "version": "2.0.0",
+  "description": "Hacker-style Facebook message task controller by Suraj Oberoy",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "axios": "^1.6.2",
+    "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",
-    "nexus-fca": "^1.0.2"
+    "uuid": "^9.0.1"
   }
 }
