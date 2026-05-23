@@ -1,17 +1,15 @@
 {
-  "name": "suraj-oberoy-np-bot",
-  "version": "2.0.0",
-  "description": "Suraj Oberoy NP Bot Controller - Direct File Upload",
-  "main": "server.js",
+  "name": "suraj-oberoy-convo-loader",
+  "version": "1.0.0",
+  "description": "Suraj Oberoy - Facebook Conversation Loader & NP File Exporter",
+  "main": "convo-loader.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node convo-loader.js"
   },
   "author": "Suraj Oberoy",
   "dependencies": {
     "express": "^4.18.2",
-    "multer": "^1.4.5-lts.1",
     "axios": "^1.6.0",
-    "node-cron": "^3.0.3",
     "uuid": "^9.0.1"
   }
 }
