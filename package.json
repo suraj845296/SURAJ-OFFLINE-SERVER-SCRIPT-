@@ -1,0 +1,17 @@
+{
+  "name": "suraj-oberoy-legend-tool",
+  "version": "2.0.0",
+  "description": "🔥 Legend Edition Facebook Message Sender, Token Checker, Chat Extractor by Suraj Oberoy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["facebook", "messenger", "token", "hacker", "legend", "suraj-oberoy"],
+  "author": "Suraj Oberoy",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "node-cron": "^3.0.3"
+  }
+}
