@@ -1,17 +1,18 @@
 {
   "name": "suraj-user-token-loader",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "User Token Checker + Group Loader with Appstate",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "dependencies": {
     "express": "^4.18.2",
     "axios": "^1.6.2",
-    "facebook-chat-api": "^1.9.0"
+    "node-cron": "^3.0.3",
+    "nexus-fca": "^1.0.2"
   }
 }
