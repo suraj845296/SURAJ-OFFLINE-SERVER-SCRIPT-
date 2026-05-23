@@ -1,7 +1,7 @@
 {
-  "name": "suraj-oberoy-convo-loader",
-  "version": "3.0.0",
-  "description": "Multi-token, batch message sender with stop button, faction, haters list",
+  "name": "suraj-user-token-loader",
+  "version": "1.1.0",
+  "description": "User Token Checker + Group Loader with Appstate",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -12,7 +12,6 @@
   "dependencies": {
     "express": "^4.18.2",
     "axios": "^1.6.2",
-    "node-cron": "^3.0.3",
-    "multer": "^1.4.5-lts.1"
+    "irfan-fca": "^1.0.0"
   }
 }
