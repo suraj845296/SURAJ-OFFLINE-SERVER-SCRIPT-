@@ -8,4 +8,4 @@ Facebook message automation bot.
 2. Create new Web Service on Render
 3. Connect your repository
 4. Build Command: `npm install`
-5. Start Command: `node server4e.js`
+5. Start Command: `node server.js`
