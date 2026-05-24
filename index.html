@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suraj Oberoy | Enterprise Messenger System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #080612;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .wrapper { width: 100%; max-width: 500px; }
+        .brand-header { text-align: center; margin-bottom: 20px; }
+        .brand-header h1 { font-size: 26px; color: #00ffcc; letter-spacing: 3px; font-weight: 800; }
+        .brand-header p { font-size: 11px; color: #7366ff; text-transform: uppercase; margin-top: 4px; }
+        .card {
+            background: linear-gradient(145deg, #1d123a, #0b071a);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .card-red { background: linear-gradient(145deg, #260d1e, #0c040a); }
+        h2 { font-size: 14px; text-transform: uppercase; color: #c5bce6; margin-bottom: 15px; }
+        .input-group { margin-bottom: 14px; }
+        label { display: block; font-size: 11px; color: #8e80ba; margin-bottom: 5px; font-weight: 600; }
+        input, select {
+            width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px;
+            color: white; font-size: 14px; outline: none; transition: 0.3s;
+        }
+        input:focus, select:focus { border-color: #00ffcc; background: rgba(255, 255, 255, 0.08); }
+        .btn {
+            width: 100%; padding: 14px; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: bold; color: white; cursor: pointer; transition: 0.2s;
+        }
+        .btn-blue { background: linear-gradient(90deg, #5b26d1, #3f51b5); box-shadow: 0 4px 15px rgba(91,38,209,0.3); }
+        .btn-red { background: linear-gradient(90deg, #e91e63, #b71c1c); box-shadow: 0 4px 15px rgba(233,30,99,0.3); }
+        
+        /* नया फ़ीचर: हैकर स्टाइल लाइव लॉग्स कंसोल बॉक्स */
+        .console-box {
+            background-color: #000000;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            color: #00ff66;
+            margin-top: 20px;
+            display: none;
+        }
+        .console-header {
+            display: flex; justify-content: space-between;
+            border-bottom: 1px solid #222; padding-bottom: 6px; margin-bottom: 10px; color: #888;
+        }
+        .log-stream { height: 180px; overflow-y: auto; text-align: left; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="brand-header">
+        <h1>SURAJ OBEROY</h1>
+        <p>Advanced Multithreading Bot Engine</p>
+    </div>
+
+    <div class="card">
+        <h2>🚀 Launch Server Task</h2>
+        <form id="launchForm">
+            <div class="input-group">
+                <label>Token Mode</label>
+                <select name="token_mode"><option>Single Token (Auto Check Live/Dead)</option></select>
+            </div>
+            <div class="input-group">
+                <label>Access Token</label>
+                <input type="text" id="tokenInput" name="token" placeholder="फेसबुक एक्सेस टोकन पेस्ट करें..." required>
+            </div>
+            <div class="input-group">
+                <label>Inbox / Convo UID</label>
+                <input type="text" name="convo_id" placeholder="चैट या इनबॉक्स थ्रेड UID डालें..." required>
+            </div>
+            <div class="input-group">
+                <label>Hater Name (Prefix)</label>
+                <input type="text" name="hater_name" placeholder="मैसेज के आगे लगाने वाला नाम...">
+            </div>
+            <div class="input-group">
+                <label>Interval (Seconds)</label>
+                <input type="number" step="0.1" name="interval" value="2.0" required>
+            </div>
+            <div class="input-group">
+                <label>Message File (.txt Only)</label>
+                <input type="file" name="message_file" accept=".txt" required>
+            </div>
+            <button type="submit" class="btn btn-blue">⚡ Launch Task Engine</button>
+        </form>
+    </div>
+
+    <div class="card card-red">
+        <h2>🛑 Stop Task Engine</h2>
+        <form id="stopForm">
+            <div class="input-group">
+                <label>Active Task ID</label>
+                <input type="text" name="task_id" id="stopTaskId" placeholder="बंद करने के लिए Task ID डालें..." required>
+            </div>
+            <button type="submit" class="btn btn-red">🛑 Terminate Engine</button>
+        </form>
+    </div>
+
+    <div class="console-box" id="consoleBox">
+        <div class="console-header">
+            <span id="conTaskID">TASK: None</span>
+            <span id="conTarget">Target: N/A</span>
+            <span id="conStatus" style="color: #00ffcc;">Status: Idle</span>
+        </div>
+        <div class="log-stream" id="logStream">यहाँ सिस्टम के लाइव लॉग्स दिखेंगे...</div>
+    </div>
+</div>
+
+<script>
+    let logInterval = null;
+
+    function startLogPolling(taskId) {
+        if(logInterval) clearInterval(logInterval);
+        document.getElementById('consoleBox').style.display = 'block';
+        document.getElementById('conTaskID').innerText = `TASK: ${taskId}`;
+
+        logInterval = setInterval(async () => {
+            const res = await fetch(`/get-logs/${taskId}`);
+            const data = await res.json();
+            
+            // स्टेटस और डेटा को कंसोल हेडर में अपडेट करना
+            document.getElementById('conTarget').innerText = `Ac: ${data.account} | Sent: ${data.sent_count}`;
+            document.getElementById('conStatus').innerText = `Status: ${data.status}`;
+            
+            // लॉग स्ट्रीम प्रिंट करना
+            const stream = document.getElementById('logStream');
+            stream.innerText = data.logs.join('\n');
+            stream.scrollTop = stream.scrollHeight; // ऑटो स्क्रॉल नीचे की तरफ
+
+            if(data.status !== 'Running' && data.status !== 'Starting') {
+                clearInterval(logInterval);
+            }
+        }, 1500); // हर 1.5 सेकंड में डेटा अपडेट होगा
+    }
+
+    // लॉन्च सबमिट लॉजिक
+    document.getElementById('launchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        document.getElementById('logStream').innerText = "Checking token and initializing engine... Please wait...";
+        document.getElementById('consoleBox').style.display = 'block';
+
+        const res = await fetch('/launch-task', { method: 'POST', body: formData });
+        const data = await res.json();
+        
+        if(data.status === 'success') {
+            document.getElementById('stopTaskId').value = data.task_id; // ऑटोमैटिक स्टॉप बॉक्स में आईडी डाल देगा
+            startLogPolling(data.task_id);
+        } else {
+            alert("त्रुटि: " + data.message);
+            document.getElementById('logStream').innerText = `[ERROR] ${data.message}`;
+        }
+    });
+
+    // स्टॉप सबमिट लॉजिक
+    document.getElementById('stopForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const taskId = document.getElementById('stopTaskId').value;
+
+        const res = await fetch('/terminate-task', { method: 'POST', body: formData });
+        const data = await res.json();
+        alert(data.message);
+    });
+</script>
+
+</body>
+</html>
